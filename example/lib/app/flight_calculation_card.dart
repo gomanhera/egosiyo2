@@ -10,7 +10,7 @@ class FlightCalculationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 4.0,
+      elevation: 12.0,
       child: Container(
         color: Palette.greenLandLight,
         padding: EdgeInsets.symmetric(vertical: 8.0),
@@ -18,13 +18,13 @@ class FlightCalculationCard extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: FlightCalculationDataItem(
-                title: 'Distance',
+                title: '???',
                 body: flightCalculationData.distanceFormatted,
               ),
             ),
             Expanded(
               child: FlightCalculationDataItem(
-                title: 'Estimated CO2e',
+                title: '???',
                 body: flightCalculationData.co2eFormatted,
               ),
             ),

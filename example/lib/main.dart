@@ -6,7 +6,10 @@ import 'package:flight_co2_calculator_flutter_example/blocs/flight_details_bloc.
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'app/main_page.dart';
+
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   final start = DateTime.now();
   List<Airport> airports = await AirportDataReader.load('data/airports.dat');
   final elapsed = DateTime.now().difference(start);
@@ -26,11 +29,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Provider<FlightDetailsBloc>(
-        builder: (context) => FlightDetailsBloc(),
-        dispose: (context, bloc) => bloc.dispose(),
-        child: FlightPage(airportLookup: airportLookup),
-      ),
+      home: MainPage(airportLookup: airportLookup)
+//      Provider<FlightDetailsBloc>(
+//        builder: (context) => FlightDetailsBloc(),
+//        dispose: (context, bloc) => bloc.dispose(),
+//        child: MainPage(airportLookup: airportLookup),
+//        child: FlightPage(airportLookup: airportLookup),
+//      ),
     );
   }
 }

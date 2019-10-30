@@ -23,14 +23,14 @@ class FlightDetailsCard extends StatelessWidget {
   final AirportLookup airportLookup;
 
   final Map<FlightClass, Widget> flightClassChildren = const <FlightClass, Widget>{
-    FlightClass.economy: Text('Economy'),
-    FlightClass.business: Text('Business'),
-    FlightClass.first: Text('First'),
+    FlightClass.economy: Text('미니룸'),
+    FlightClass.business: Text('샤워룸'),
+    FlightClass.first: Text('원룸'),
   };
 
   final Map<FlightType, Widget> flightTypeChildren = const <FlightType, Widget>{
-    FlightType.oneWay: Text('One Way'),
-    FlightType.twoWays: Text('Return'),
+    FlightType.oneWay: Text('남녀 혼용'),
+    FlightType.twoWays: Text('남녀 분리'),
   };
 
   Future<Airport> _showSearch(BuildContext context) async {
@@ -54,45 +54,37 @@ class FlightDetailsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 4.0,
+      elevation: 12.0,
       child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Palette.blueSkyLight,
-              Palette.greenLandLight,
-            ],
-          ),
-        ),
+
+        color: Colors.white,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             VerticalSpacing(),
             AirportWidget(
-              iconData: Icons.flight_takeoff,
-              title: Text('Departing From', style: TextStyles.caption),
+              iconData: Icons.subway,
+              title: Text('기준 장소', style: TextStyles.caption),
               airport: flightDetails.departure,
               onPressed: () => _selectDeparture(context),
             ),
             VerticalSpacing(),
             AirportWidget(
-              iconData: Icons.flight_land,
-              title: Text('Flying to', style: TextStyles.caption),
+              iconData: Icons.line_style,
+              title: Text('거리', style: TextStyles.caption),
               airport: flightDetails.arrival,
               onPressed: () => _selectArrival(context),
             ),
             VerticalSpacing(),
             SegmentedControl<FlightType>(
-              header: Text('Type', style: TextStyles.caption),
+              header: Text('남녀 구분', style: TextStyles.caption),
               value: flightDetails.flightType,
               children: flightTypeChildren,
               onValueChanged: (flightType) => flightDetailsBloc.updateWith(flightType: flightType),
             ),
             VerticalSpacing(),
             SegmentedControl<FlightClass>(
-              header: Text('Class', style: TextStyles.caption),
+              header: Text('방 타입', style: TextStyles.caption),
               value: flightDetails.flightClass,
               children: flightClassChildren,
               onValueChanged: (flightClass) => flightDetailsBloc.updateWith(flightClass: flightClass),
