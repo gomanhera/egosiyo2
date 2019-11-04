@@ -4,6 +4,7 @@ import 'package:flight_co2_calculator_flutter_example/app/constants/palette.dart
 import 'package:flight_co2_calculator_flutter_example/app/constants/text_styles.dart';
 import 'package:flight_co2_calculator_flutter_example/app/flight_calculation_card.dart';
 import 'package:flight_co2_calculator_flutter_example/app/flight_details_card.dart';
+import 'package:flight_co2_calculator_flutter_example/blocs/conditions_bloc.dart';
 import 'package:flight_co2_calculator_flutter_example/blocs/flight_details_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,10 +28,10 @@ class FlightPage extends StatelessWidget {
   }
 
   Widget _buildContent(BuildContext context) {
-    final flightDetailsBloc = Provider.of<FlightDetailsBloc>(context);
-    return StreamBuilder<Flight>(
-      stream: flightDetailsBloc.flightStream,
-      initialData: Flight.initialData(),
+    final conditionsBloc = Provider.of<ConditionsBloc>(context);
+    return StreamBuilder<Condition>(
+      stream: conditionsBloc.conditionStream,
+      initialData: Condition.initialData(),
       builder: (context, snapshot) {
         return Container(
 //          decoration: BoxDecoration(
@@ -52,15 +53,15 @@ class FlightPage extends StatelessWidget {
             child: Column(
 
               children: <Widget>[
-                FlightDetailsCard(
+                ConditionsCard(
                   airportLookup: airportLookup,
-                  flightDetails: snapshot.data.details,
-                  flightDetailsBloc: flightDetailsBloc,
+                  conditions: snapshot.data,
+                  conditionsBloc: conditionsBloc,
                 ),
 
-                FlightCalculationCard(
-                  flightCalculationData: snapshot.data.data,
-                ),
+//                FlightCalculationCard(
+//                  flightCalculationData: snapshot.data.distance,
+//                ),
                 Expanded(child: Container()),
                 Container
                   (

@@ -1,3 +1,4 @@
+import 'package:flight_co2_calculator_flutter_example/blocs/conditions_bloc.dart';
 import 'package:flight_co2_calculator_flutter_example/blocs/flight_details_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sparkline/flutter_sparkline.dart';
@@ -62,7 +63,7 @@ class _MainPageState extends State<MainPage>
           crossAxisCount: 2,
           crossAxisSpacing: 12.0,
           mainAxisSpacing: 12.0,
-          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
           children: <Widget>[
             _buildTile(
               Padding
@@ -101,8 +102,8 @@ class _MainPageState extends State<MainPage>
                 ),
               ),
               onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-                    return Provider<FlightDetailsBloc>(
-                      builder: (context) => FlightDetailsBloc(),
+                    return Provider<ConditionsBloc>(
+                      builder: (context) => ConditionsBloc(),
                       dispose: (context, bloc) => bloc.dispose(),
                       child: FlightPage(airportLookup: airportLookup),
                     );

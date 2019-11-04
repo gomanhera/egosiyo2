@@ -9,47 +9,69 @@ import 'package:flight_co2_calculator_flutter_example/app/common_widgets/vertica
 import 'package:flight_co2_calculator_flutter_example/app/constants/palette.dart';
 import 'package:flight_co2_calculator_flutter_example/app/constants/text_styles.dart';
 import 'package:flight_co2_calculator_flutter_example/app/segmented_control.dart';
-import 'package:flight_co2_calculator_flutter_example/blocs/flight_details_bloc.dart';
+import 'package:flight_co2_calculator_flutter_example/blocs/conditions_bloc.dart';
+//import 'package:flight_co2_calculator_flutter_example/blocs/flight_details_bloc.dart';
 import 'package:flutter/material.dart';
 
-class FlightDetailsCard extends StatelessWidget {
-  FlightDetailsCard({
-    @required this.flightDetails,
-    @required this.flightDetailsBloc,
+class ConditionsCard extends StatelessWidget {
+  ConditionsCard({
+    @required this.conditions,
     @required this.airportLookup,
+    @required this.conditionsBloc,
   });
-  final FlightDetails flightDetails;
-  final FlightDetailsBloc flightDetailsBloc;
+  final Condition conditions;
+  final ConditionsBloc conditionsBloc;
   final AirportLookup airportLookup;
 
-  final Map<FlightClass, Widget> flightClassChildren = const <FlightClass, Widget>{
-    FlightClass.economy: Text('미니룸'),
-    FlightClass.business: Text('샤워룸'),
-    FlightClass.first: Text('원룸'),
+  final Map<RoomType, Widget> roomTypeChildren = const <RoomType, Widget>{
+    RoomType.mini: Text('미니룸'),
+    RoomType.shower: Text('샤워룸'),
+    RoomType.one: Text('원룸'),
+    RoomType.any: Text('무관')
   };
 
-  final Map<FlightType, Widget> flightTypeChildren = const <FlightType, Widget>{
-    FlightType.oneWay: Text('남녀 혼용'),
-    FlightType.twoWays: Text('남녀 분리'),
+  final Map<SexSeparation, Widget> sexSeperationChildren = const <SexSeparation, Widget>{
+    SexSeparation.together:Text('남녀 혼용'),
+    SexSeparation.seperated:Text('남녀 분리'),
+    SexSeparation.any:Text('무관')
   };
 
-  Future<Airport> _showSearch(BuildContext context) async {
-    return await showSearch<Airport>(
+  Future<Location> _showLocationSearch(BuildContext context) async {
+    return await showSearch<Location>(
         context: context,
         delegate: AirportSearchDelegate(
           airportLookup: airportLookup,
         ));
   }
+//  Future<Distance> _showDistanceSearch(BuildContext context) async {
+//    return await showSearch<Distance>(
+//        context: context,
+//        delegate: AirportSearchDelegate(
+//          airportLookup: airportLookup,
+//        ));
+//  }
 
-  void _selectDeparture(BuildContext context) async {
-    final departure = await _showSearch(context);
-    flightDetailsBloc.updateWith(departure: departure);
+  void _selectLocation(BuildContext context) async {
+    final Location location = await _showLocationSearch(context);
+    conditionsBloc.updateWith(
+        location: location
+    );
   }
+//  void _selectDistance(BuildContext context) async {
+//    final Distance distance = await _showDistanceSearch(context);
+//    conditionsBloc.updateWith(
+//        distance: distance
+//    );
+//  }
 
-  void _selectArrival(BuildContext context) async {
-    final arrival = await _showSearch(context);
-    flightDetailsBloc.updateWith(arrival: arrival);
-  }
+//  void _selectDistance(BuildContext context) async {
+//    final arrival = await _showSearch(context);
+//    distanceBloc.updateWith2(
+//        subway_nm: arrival["subway_nm"],
+//        line_nm: arrival["line_nm"]
+//    );
+////    flightDetailsBloc.updateWith(arrival: arrival);
+//  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,32 +84,32 @@ class FlightDetailsCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             VerticalSpacing(),
-            AirportWidget(
+            SelectedWidget(
               iconData: Icons.subway,
               title: Text('기준 장소', style: TextStyles.caption),
-              airport: flightDetails.departure,
-              onPressed: () => _selectDeparture(context),
+              selected: conditions,
+              onPressed: () => _selectLocation(context),
             ),
             VerticalSpacing(),
-            AirportWidget(
-              iconData: Icons.line_style,
-              title: Text('거리', style: TextStyles.caption),
-              airport: flightDetails.arrival,
-              onPressed: () => _selectArrival(context),
-            ),
-            VerticalSpacing(),
-            SegmentedControl<FlightType>(
+//            SelectedWidget(
+//              iconData: Icons.line_style,
+//              title: Text('거리', style: TextStyles.caption),
+//              selected: conditions,
+//              onPressed: () => _selectDistance(context),
+//            ),
+//            VerticalSpacing(),
+            SegmentedControl<SexSeparation>(
               header: Text('남녀 구분', style: TextStyles.caption),
-              value: flightDetails.flightType,
-              children: flightTypeChildren,
-              onValueChanged: (flightType) => flightDetailsBloc.updateWith(flightType: flightType),
+              value: conditions.details.sexSeperation,
+              children: sexSeperationChildren,
+              onValueChanged: (sexSeperation) => conditionsBloc.updateWith(sexSeperation: sexSeperation),
             ),
             VerticalSpacing(),
-            SegmentedControl<FlightClass>(
+            SegmentedControl<RoomType>(
               header: Text('방 타입', style: TextStyles.caption),
-              value: flightDetails.flightClass,
-              children: flightClassChildren,
-              onValueChanged: (flightClass) => flightDetailsBloc.updateWith(flightClass: flightClass),
+              value: conditions.details.roomType,
+              children: roomTypeChildren,
+              onValueChanged: (roomType) => conditionsBloc.updateWith(roomType: roomType),
             ),
             VerticalSpacing(),
           ],
@@ -96,3 +118,5 @@ class FlightDetailsCard extends StatelessWidget {
     );
   }
 }
+
+

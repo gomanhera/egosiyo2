@@ -80,6 +80,8 @@ class FlightData {
   }
 }
 
+
+
 /// Model for the FlightPage
 class Flight {
   Flight({@required this.details, @required this.data});
